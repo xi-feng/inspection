@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qhit.mapper.TbGoodsDao">
+  <resultMap id="BaseResultMap" type="com.qhit.pojo.TbGoods">
+    <result column="Goodsinsp" jdbcType="VARCHAR" property="goodsinsp" />
+    <result column="Goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="Goods_no" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="Audit_type" jdbcType="VARCHAR" property="auditType" />
+    <result column="stauts" jdbcType="VARCHAR" property="stauts" />
+    <result column="Cbename" jdbcType="VARCHAR" property="cbename" />
+    <result column="cbecodeinsp" jdbcType="VARCHAR" property="cbecodeinsp" />
+    <result column="Create_Time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Goodsinsp, Goods_name, Goods_no, Audit_type, stauts, Cbename, cbecodeinsp, Create_Time
+  </sql>
+  <select id="selectByExample" parameterType="com.qhit.pojo.TbGoodsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.qhit.pojo.TbGoodsExample">
+    delete from tb_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.qhit.pojo.TbGoods">
+    insert into tb_goods (Goodsinsp, Goods_name, Goods_no, 
+      Audit_type, stauts, Cbename, 
+      cbecodeinsp, Create_Time)
+    values (#{goodsinsp,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsNo,jdbcType=VARCHAR}, 
+      #{auditType,jdbcType=VARCHAR}, #{stauts,jdbcType=VARCHAR}, #{cbename,jdbcType=VARCHAR}, 
+      #{cbecodeinsp,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qhit.pojo.TbGoods">
+    insert into tb_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsinsp != null">
+        Goodsinsp,
+      </if>
+      <if test="goodsName != null">
+        Goods_name,
+      </if>
+      <if test="goodsNo != null">
+        Goods_no,
+      </if>
+      <if test="auditType != null">
+        Audit_type,
+      </if>
+      <if test="stauts != null">
+        stauts,
+      </if>
+      <if test="cbename != null">
+        Cbename,
+      </if>
+      <if test="cbecodeinsp != null">
+        cbecodeinsp,
+      </if>
+      <if test="createTime != null">
+        Create_Time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsinsp != null">
+        #{goodsinsp,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsNo != null">
+        #{goodsNo,jdbcType=VARCHAR},
+      </if>
+      <if test="auditType != null">
+        #{auditType,jdbcType=VARCHAR},
+      </if>
+      <if test="stauts != null">
+        #{stauts,jdbcType=VARCHAR},
+      </if>
+      <if test="cbename != null">
+        #{cbename,jdbcType=VARCHAR},
+      </if>
+      <if test="cbecodeinsp != null">
+        #{cbecodeinsp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qhit.pojo.TbGoodsExample" resultType="java.lang.Long">
+    select count(*) from tb_goods
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_goods
+    <set>
+      <if test="record.goodsinsp != null">
+        Goodsinsp = #{record.goodsinsp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsName != null">
+        Goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsNo != null">
+        Goods_no = #{record.goodsNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditType != null">
+        Audit_type = #{record.auditType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stauts != null">
+        stauts = #{record.stauts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbename != null">
+        Cbename = #{record.cbename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cbecodeinsp != null">
+        cbecodeinsp = #{record.cbecodeinsp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        Create_Time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_goods
+    set Goodsinsp = #{record.goodsinsp,jdbcType=VARCHAR},
+      Goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      Goods_no = #{record.goodsNo,jdbcType=VARCHAR},
+      Audit_type = #{record.auditType,jdbcType=VARCHAR},
+      stauts = #{record.stauts,jdbcType=VARCHAR},
+      Cbename = #{record.cbename,jdbcType=VARCHAR},
+      cbecodeinsp = #{record.cbecodeinsp,jdbcType=VARCHAR},
+      Create_Time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+</mapper>

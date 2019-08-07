@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qhit.mapper.CommonBeanDao">
+    <resultMap id="QingAllMap" type="com.qhit.pojo.CommonBean">
+        <!-- 清单表-->
+        <id column="Qing_no" jdbcType="INTEGER" property="qingNo" />
+        <result column="orders_no" jdbcType="INTEGER" property="ordersNo" />
+        <result column="Waybill_no" jdbcType="INTEGER" property="waybillNo" />
+        <result column="Pay_no" jdbcType="INTEGER" property="payNo" />
+        <result column="Stauts" jdbcType="INTEGER" property="stauts" />
+        <result column="Create_Time" jdbcType="INTEGER" property="createTime" />
+
+        <!--订单表-->
+        <result column="Cbename" jdbcType="INTEGER" property="cbename" />
+        <result column="cbecodeinsp" jdbcType="INTEGER" property="cbecodeinsp" />
+        <result column="Goods_number" jdbcType="INTEGER" property="goodsNumber" />
+        <result column="User_name" jdbcType="INTEGER" property="userName" />
+        <result column="Total_Money" jdbcType="INTEGER" property="totalMoney" />
+
+        <!--订单明细表-->
+        <result column="ordersDetails_no" jdbcType="INTEGER" property="ordersdetailsNo" />
+        <result column="Goods_no" jdbcType="INTEGER" property="goodsNo" />
+        <result column="Goods_name" jdbcType="INTEGER" property="goodsName" />
+        <result column="Goodsinsp" jdbcType="INTEGER" property="goodsinsp" />
+        <result column="Goods_price" jdbcType="INTEGER" property="goodsPrice" />
+        <result column="Total" jdbcType="INTEGER" property="total" />
+
+
+
+        <!--运单表-->
+        <result column="Wlqycodeinsp" jdbcType="INTEGER" property="wlqycodeinsp" />
+        <result column="wlqyname" jdbcType="INTEGER" property="wlqyname" />
+        <result column="sender" jdbcType="INTEGER" property="sender" />
+        <result column="receiver" jdbcType="INTEGER" property="receiver" />
+        <result column="address" jdbcType="INTEGER" property="address" />
+
+        <!--商品表-->
+        <result column="Audit_type" jdbcType="INTEGER" property="auditType" />
+        <!--//<result column="stauts" jdbcType="INTEGER" property="stautss" />-->
+
+
+
+    </resultMap>
+
+    <select id="commonBeanAll" parameterType="String" resultMap="QingAllMap">
+  select * from tb_qing q ,tb_orders b, tb_ordersdetails o,tb_waybill w,tb_goods tog  where q.orders_no =b.orders_no and b.orders_no=o.orders_no and q.Waybill_no=w.Waybill_no and o.Goods_no=tog.Goods_no and  q.Stauts=#{stauts,jdbcType=VARCHAR}
+
+
+    </select>
+
+    <select id="zongtiaoshu" parameterType="String" resultType="int">
+          select count(*) from tb_qing q ,tb_orders b, tb_ordersdetails o,tb_waybill w,tb_goods tog
+where q.orders_no =b.orders_no and b.orders_no=o.orders_no and q.Waybill_no=w.Waybill_no and o.Goods_no=tog.Goods_no
+
+and  q.Stauts=#{stauts,jdbcType=VARCHAR}
+
+    </select>
+
+</mapper>

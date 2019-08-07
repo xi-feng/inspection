@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/layui-v2.4.5/layui/layui.js"></script>
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="../static/layui-v2.4.5/layui/css/layui.css">
+    <script src="layui-v2.4.5/layui/layui.js"></script>
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="layui-v2.4.5/layui/css/layui.css">
+</head>
+<body>
+
+<table class="layui-hide" id="test" lay-filter="test"></table>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+    </div>
+</script>
+
+<script type="text/html" id="barDemo">
+    <!--<a class="layui-btn layui-btn-xs"  lay-event="edit" >放行</a>-->
+   <!-- <a class="layui-btn   layui-btn-xs"  lay-event="del">放行</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="dell">查验</a>-->
+</script>
+<script>
+    layui.use(['jquery', 'layer'], function(){
+        var $ = layui.$ //重点处
+            ,layer = layui.layer;
+
+        //后面就跟你平时使用jQuery一样
+        // $('body').append('hello jquery');
+
+    });
+
+
+
+</script>
+
+
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.render({
+            elem: '#test'
+            ,url:'jinzhichujin'
+            ,toolbar: '#toolbarDemo'
+            ,title: '用户数据表'
+            // ,limit:8//每页显示的记录数量
+
+            // ,limits:[5,8,10,15,20]//可选择每页显示的数量
+            , page: true
+            ,cols: [
+                [
+                    {type: 'checkbox',fixed: 'left'}
+                    ,{field:'cbename', title:'电商名称', width:50, fixed: 'left', unresize: true, sort: true}
+                    ,{field:'goodsNo', title:'商品货号', width:100, edit: 'text'}
+                    ,{field:'qingNo', title:'清单编号', width:220, edit: 'text', sort: true}
+                    ,{field:'ordersNo', title:'订单编号', width:100}
+                    ,{field:'waybillNo', title:'运单编号'}
+                    ,{field:'goodsNumber', title:'商品数量', width:80, sort: true}
+                    ,{field:'userName', title:'下单人', width:120}
+                    ,{field:'totalMoney', title:'总金额', width:120}
+                    ,{field:'stauts', title:'状态', width:120}
+                    // ,{field:'logins', title:'登入次数', width:100, sort: true}
+                    // ,{field:'joinTime', title:'加入时间', width:120}
+                    //,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:220}
+                ]
+            ]
+            // ,height:550//设置表格的高度
+
+        });
+
+        //头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                    break;
+                case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){
+            var data = obj.data;
+            //console.log(obj)
+            if(obj.event === 'del'){
+                layer.confirm('你没资格放行', function(index){
+                    // obj.del();
+
+                    layer.close(index);
+                    $.post("aaaa",{ordersNo:data.ordersNo},function (data) {
+                        if(data=="1"){
+                            layer.alert("放行成功！")
+                            $(".layui-laypage-btn")[0].click();//刷新当前页
+
+                        }
+                    });
+                });
+            } else if(obj.event === 'dell'){
+                layer.confirm('你没资格查验', function(index){
+                    // obj.del();
+
+                    layer.close(index);
+                    $.post("qqq",{ordersNo:data.ordersNo},function (data) {
+                        if(data=="1"){
+                            layer.alert("修改查验完成！")
+                            $(".layui-laypage-btn")[0].click();//刷新当前页
+
+                        }
+                    });
+                });
+            }else if(obj.event === 'edit'){
+                layer.prompt({
+                    formType: 2
+                    ,value: data.email
+                }, function(value, index){
+                    obj.update({
+                        email: value
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

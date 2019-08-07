@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qhit.mapper.TbQingDao">
+  <resultMap id="BaseResultMap" type="com.qhit.pojo.TbQing">
+    <id column="Qing_no" jdbcType="VARCHAR" property="qingNo" />
+    <result column="orders_no" jdbcType="VARCHAR" property="ordersNo" />
+    <result column="Waybill_no" jdbcType="VARCHAR" property="waybillNo" />
+    <result column="Pay_no" jdbcType="VARCHAR" property="payNo" />
+    <result column="Stauts" jdbcType="VARCHAR" property="stauts" />
+    <result column="Create_Time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Qing_no, orders_no, Waybill_no, Pay_no, Stauts, Create_Time
+  </sql>
+  <select id="selectByExample" parameterType="com.qhit.pojo.TbQingExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_qing
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_qing
+    where Qing_no = #{qingNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_qing
+    where Qing_no = #{qingNo,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.qhit.pojo.TbQingExample">
+    delete from tb_qing
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" keyColumn="Qing_no" keyProperty="qingNo" parameterType="com.qhit.pojo.TbQing" useGeneratedKeys="true">
+    insert into tb_qing (orders_no, Waybill_no, Pay_no, 
+      Stauts, Create_Time)
+    values (#{ordersNo,jdbcType=VARCHAR}, #{waybillNo,jdbcType=VARCHAR}, #{payNo,jdbcType=VARCHAR}, 
+      #{stauts,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="Qing_no" keyProperty="qingNo" parameterType="com.qhit.pojo.TbQing" useGeneratedKeys="true">
+    insert into tb_qing
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ordersNo != null">
+        orders_no,
+      </if>
+      <if test="waybillNo != null">
+        Waybill_no,
+      </if>
+      <if test="payNo != null">
+        Pay_no,
+      </if>
+      <if test="stauts != null">
+        Stauts,
+      </if>
+      <if test="createTime != null">
+        Create_Time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ordersNo != null">
+        #{ordersNo,jdbcType=VARCHAR},
+      </if>
+      <if test="waybillNo != null">
+        #{waybillNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payNo != null">
+        #{payNo,jdbcType=VARCHAR},
+      </if>
+      <if test="stauts != null">
+        #{stauts,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.qhit.pojo.TbQingExample" resultType="java.lang.Long">
+    select count(*) from tb_qing
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_qing
+    <set>
+      <if test="record.qingNo != null">
+        Qing_no = #{record.qingNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ordersNo != null">
+        orders_no = #{record.ordersNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.waybillNo != null">
+        Waybill_no = #{record.waybillNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payNo != null">
+        Pay_no = #{record.payNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.stauts != null">
+        Stauts = #{record.stauts,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        Create_Time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_qing
+    set Qing_no = #{record.qingNo,jdbcType=VARCHAR},
+      orders_no = #{record.ordersNo,jdbcType=VARCHAR},
+      Waybill_no = #{record.waybillNo,jdbcType=VARCHAR},
+      Pay_no = #{record.payNo,jdbcType=VARCHAR},
+      Stauts = #{record.stauts,jdbcType=VARCHAR},
+      Create_Time = #{record.createTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qhit.pojo.TbQing">
+    update tb_qing
+    <set>
+      <if test="ordersNo != null">
+        orders_no = #{ordersNo,jdbcType=VARCHAR},
+      </if>
+      <if test="waybillNo != null">
+        Waybill_no = #{waybillNo,jdbcType=VARCHAR},
+      </if>
+      <if test="payNo != null">
+        Pay_no = #{payNo,jdbcType=VARCHAR},
+      </if>
+      <if test="stauts != null">
+        Stauts = #{stauts,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        Create_Time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Qing_no = #{qingNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qhit.pojo.TbQing">
+    update tb_qing
+    set orders_no = #{ordersNo,jdbcType=VARCHAR},
+      Waybill_no = #{waybillNo,jdbcType=VARCHAR},
+      Pay_no = #{payNo,jdbcType=VARCHAR},
+      Stauts = #{stauts,jdbcType=VARCHAR},
+      Create_Time = #{createTime,jdbcType=TIMESTAMP}
+    where Qing_no = #{qingNo,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="inz" keyColumn="Qing_no" keyProperty="qingNo" parameterType="com.qhit.pojo.TbQing" useGeneratedKeys="true">
+    insert into tb_qing (Qing_no,orders_no, Waybill_no, Pay_no,Stauts,
+      Create_Time)
+    values (#{qingNo,jdbcType=VARCHAR},#{ordersNo,jdbcType=VARCHAR}, #{waybillNo,jdbcType=VARCHAR}, #{payNo,jdbcType=VARCHAR},
+   #{stauts,jdbcType=TIMESTAMP},#{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="upz" parameterType="com.qhit.pojo.TbQing">
+    UPDATE tb_qing SET Stauts=#{stauts,jdbcType=VARCHAR} WHERE orders_no=#{ordersNo,jdbcType=VARCHAR}
+  </update>
+
+<resultMap id="servictTbQingAllMap" type="com.qhit.pojo.TbQing">
+  <id column="Qing_no" jdbcType="VARCHAR" property="qingNo" />
+  <result column="orders_no" jdbcType="VARCHAR" property="ordersNo" />
+  <result column="Waybill_no" jdbcType="VARCHAR" property="waybillNo" />
+  <result column="Pay_no" jdbcType="VARCHAR" property="payNo" />
+  <result column="Stauts" jdbcType="VARCHAR" property="stauts" />
+  <result column="Create_Time" jdbcType="TIMESTAMP" property="createTime" />
+  <collection property="ByTbOrders" ofType="com.qhit.pojo.TbOrders">
+    <id column="orders_no" jdbcType="VARCHAR" property="ordersNo" />
+    <result column="Cbename" jdbcType="VARCHAR" property="cbename" />
+    <result column="cbecodeinsp" jdbcType="VARCHAR" property="cbecodeinsp" />
+    <result column="Goods_number" jdbcType="INTEGER" property="goodsNumber" />
+    <result column="User_name" jdbcType="VARCHAR" property="userName" />
+    <result column="Total_Money" jdbcType="REAL" property="totalMoney" />
+    <result column="Create_Time" jdbcType="TIMESTAMP" property="createTime" />
+  </collection>
+  <collection property="ordersdetails" ofType="com.qhit.pojo.TbOrdersdetails">
+    <id column="ordersDetails_no" jdbcType="VARCHAR" property="ordersdetailsNo" />
+    <result column="orders_no" jdbcType="VARCHAR" property="ordersNo" />
+    <result column="Goods_no" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="Goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="Goodsinsp" jdbcType="VARCHAR" property="goodsinsp" />
+    <result column="Goods_price" jdbcType="REAL" property="goodsPrice" />
+    <result column="Goods_number" jdbcType="INTEGER" property="goodsNumber" />
+    <result column="Total" jdbcType="REAL" property="total" />
+    <result column="Create_Time" jdbcType="TIMESTAMP" property="createTime" />
+
+  </collection>
+
+  <collection property="tbWaybills" ofType="com.qhit.pojo.TbWaybill">
+    <id column="Waybill_no" jdbcType="VARCHAR" property="waybillNo" />
+    <result column="Wlqycodeinsp" jdbcType="VARCHAR" property="wlqycodeinsp" />
+    <result column="wlqyname" jdbcType="VARCHAR" property="wlqyname" />
+    <result column="sender" jdbcType="VARCHAR" property="sender" />
+    <result column="receiver" jdbcType="VARCHAR" property="receiver" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="Create_Time" jdbcType="TIMESTAMP" property="createTime" />
+  </collection>
+  <collection property="tbGoods" ofType="com.qhit.pojo.TbGoods">
+    <result column="Goodsinsp" jdbcType="VARCHAR" property="goodsinsp" />
+    <result column="Goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="Goods_no" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="Audit_type" jdbcType="VARCHAR" property="auditType" />
+    <result column="stauts" jdbcType="VARCHAR" property="stauts" />
+    <result column="Cbename" jdbcType="VARCHAR" property="cbename" />
+    <result column="cbecodeinsp" jdbcType="VARCHAR" property="cbecodeinsp" />
+    <result column="Create_Time" jdbcType="TIMESTAMP" property="createTime" />
+
+
+  </collection>
+
+</resultMap>
+  <select id="servictTbQingAll" resultMap="servictTbQingAllMap">
+  select * from tb_qing q ,tb_orders b, tb_ordersdetails o,tb_waybill w,tb_goods tog  where q.orders_no =b.orders_no and b.orders_no=o.orders_no and q.Waybill_no=w.Waybill_no and o.Goods_no=tog.Goods_no
+  </select>
+
+</mapper>

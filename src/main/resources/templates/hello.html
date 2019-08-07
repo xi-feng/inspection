@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			canvas{
+				display: block;
+				background-color:#000;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas class="rain"></canvas>
+		<script type="text/javascript">
+		/*1.让canvas高和宽始终和浏览器一致*/
+	
+			/*获取canvas的DOM*/		
+			var ocanvas=document.querySelector('.rain');
+			var w,h;
+			var y=0;
+			var r=10;
+			var aRain=[];//存放所有新生成的雨滴
+			
+			//~~function(){}();自动执行函数  避免全局变量的污染
+			~~function(){
+				//onresize 用户调整窗口大小所发生事件
+				//arguments.callee引用函数自身
+				window.onresize=arguments.callee;
+				// w=window.innerWidth;
+				// h=window.innerHeight;
+				w=1400;
+				h=600;
+				ocanvas.width=w;
+				ocanvas.height=h;
+			}();
+		/*2.绘制图形
+			// 获取canvas元素上的可以绘制的区域
+			var canCon = ocanvas.getContext("2d");
+			//拿起笔,并沾上带有颜色的墨水fillStyle实心笔墨水 strokeStyle空心笔墨水
+			canCon.strokeStyle="red";
+			//绘制图形的基本参数
+			canCon.arc(233,233,66,0,Math.PI*2);//坐标圆心的X,Y坐标，半径  弧度 0~Math.PI*2
+			//开始绘制  fill()实心  stroke()空心
+			canCon.stroke();
+			//绘制矩形
+			canCon.strokeRect(100,100,33,33);*/
+			
+		/*3.绘制动态图形
+		 	会动的画     t单位是毫秒 1/60s
+		 * */
+			//setInterval(function(){},t); 每隔T毫秒就执行一次function（）函数 
+			//	canCon.clearRect(0,0,w,h);//擦除矩形
+			var canCon = ocanvas.getContext("2d");
+			//画一个下落的雨滴
+			/*setInterval(function(){
+				canCon.fillStyle="rgba(0,0,0,0.03)";
+				canCon.fillRect(0,0,w,h);
+				canCon.beginPath();//提笔
+				canCon.fillStyle="#3ff";
+				canCon.fillRect(100,y+=3.5,2,15);
+			},1000/60);
+			//画一个绽放的雨滴
+			setInterval(function(){
+				canCon.fillStyle="rgba(0,0,0,0.03)";
+				canCon.fillRect(0,0,w,h);
+				canCon.beginPath();//提笔
+				canCon.strokeStyle="#3ff";
+				canCon.arc(300,400,r++,0,Math.PI*2);
+				canCon.stroke();
+			},1000/60);*/
+			//创建生成随机数的方法
+			function random(min,max){
+				return Math.random()*(max-min)+min;
+			}
+			function Rain(){};//雨滴的构造方法
+			Rain.prototype={//雨滴的基因属性
+				init:function(){//雨滴的基本参数
+					this.x=random(0,w);
+					this.y=0;
+					this.w=random(1.5,2.5);
+					this.h=random(9,15);
+					this.color="#3fff";
+					this.ground=random(0.8*h,0.9*h);
+					this.vy=random(2,3);
+					this.vr=random(0.5,1.5);
+					this.a=1;
+					this.va=0.9;
+					this.r=this.w/2;
+				},
+				draw:function(){//按照基本参数画雨
+					if(this.y<this.ground){
+					canCon.beginPath();//提笔
+					canCon.fillStyle=this.color;
+					canCon.fillRect(this.x,this.y,this.w,this.h);
+					}else{
+						canCon.beginPath();//提笔
+						canCon.strokeStyle="rgba(63,207,255,"+this.a+")";
+						canCon.arc(this.x,this.y,this.r,0,Math.PI*2);
+						canCon.stroke();
+					}
+				},
+				move:function(){
+					if(this.y<this.ground){
+						this.y+=this.vy;
+					}else{
+						if(this.r<70){
+							this.r+=this.vr;
+							if(this.r>30){
+								this.a+=this.va;
+							}
+						}
+						else{
+							this.init();
+						}
+					}
+					this.draw();
+				}
+			}	
+			
+			//setTimeout(function(){},t);在t秒之后就执行一次函数
+			function createRain(num){
+				for(var i=0;i<=num;i++){
+					setTimeout(function(){
+						var rain=new Rain();
+						rain.init();
+						rain.draw();
+						aRain.push(rain);
+					},200*i);
+				};
+
+			}
+			createRain(66);
+		    //先复制透明层再绘制雨滴 雨滴就把先绘制的透明层覆盖 下一次绘制透明层
+    		//就会把之前绘制的雨滴覆盖 若干的透明层叠加就会越来越不透明
+			setInterval (function(){
+				canCon.fillStyle="rgba(0,0,0,0.066)";
+				canCon.fillRect(0,0,w,h);
+				for(var item of aRain){
+					item.move();
+				}
+			},1000/60)//每隔1000/60ms就画一次move()
+		</script>
+	</body>
+</html>
